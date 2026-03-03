@@ -4,10 +4,10 @@ class Expense:
     id: int | None
     description: str
     amount: float
-    created_at: str
-    updated_at: str
+    created_at: datetime
+    updated_at: datetime
 
-    def __init__(self, id: int | None, description: str, amount: str, created_at: str, updated_at = str | None):
+    def __init__(self, id: int | None, description: str, amount: float, created_at: datetime, updated_at = datetime | None):
         self.id = id
         self.description = description
         self.amount = amount

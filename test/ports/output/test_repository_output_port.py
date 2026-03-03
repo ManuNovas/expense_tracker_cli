@@ -18,7 +18,7 @@ class TestRepositoryOutputPort(TestCase):
             id=None,
             description="Potions",
             amount=128.0,
-            created_at=datetime.now().isoformat(),
+            created_at=datetime.now(),
             updated_at=None
         ))
         self.assertEqual(id, 1)

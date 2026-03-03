@@ -9,4 +9,9 @@ class RepositoryOutputPort:
         self.expense_adapter = JsonOutputAdapter("expenses.json")
 
     def create_expense(self, expense: Expense) -> int:
-        return self.expense_adapter.create(expense.__dict__)
+        return self.expense_adapter.create({
+            "description": expense.description,
+            "amount": expense.amount,
+            "created_at": expense.created_at.isoformat(),
+            "updated_at": None
+        })
