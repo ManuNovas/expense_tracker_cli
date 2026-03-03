@@ -1,15 +1,14 @@
 from os.path import exists
 from json import load, dump
 
-from src.application.ports.output import RepositoryOutputPort
 
-
-class JsonOutputAdapter(RepositoryOutputPort):
+class JsonOutputAdapter:
     file_name: str
     data: list[dict]
 
     def __init__(self, file_name: str):
         self.file_name = file_name
+        self.data = []
 
     def open(self):
         if not exists(self.file_name):
