@@ -1,2 +1,2 @@
 [run]
-omit = src/application/ports
+omit = src/application/ports/*,main.py

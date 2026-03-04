@@ -1,0 +1,26 @@
+from src.application.ports.input import ExpenseInputPort
+from src.domain.dtos import ArgsDto
+
+
+class ExpenseInputAdapter:
+    input_port: ExpenseInputPort
+
+    def __init__(self, input_port: ExpenseInputPort):
+        self.input_port = input_port
+
+    def add(self, description: str | None, amount: float | None):
+        if not description or not amount:
+            print("You should specify a description and an amount.")
+            return 2
+        id = self.input_port.create(description, amount)
+        print(f"Expense added successfuly (ID: {id})")
+        return 0
+
+    def main(self, args: ArgsDto) -> int:
+        if args.command == "add":
+            response = self.add(args.description, args.amount)
+        else:
+            print("Unknown command.")
+            response = 1
+        return response
+

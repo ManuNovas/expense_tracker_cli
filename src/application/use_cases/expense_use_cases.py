@@ -1,15 +1,10 @@
 from datetime import datetime
 
 from src.domain.entities import Expense
-from src.application.ports.output import RepositoryOutputPort
+from src.application.ports.input import ExpenseInputPort
 
 
-class ExpenseUseCases:
-    repository_port: RepositoryOutputPort
-
-    def __init__(self, repository_port: RepositoryOutputPort):
-        self.repository_port = repository_port
-
+class ExpenseUseCases(ExpenseInputPort):
     def create(self, description: str, amount: float) -> int:
         expense = Expense(
             id=None,
