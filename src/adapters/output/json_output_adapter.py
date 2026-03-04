@@ -32,3 +32,17 @@ class JsonOutputAdapter(RepositoryOutputPort):
         self.data.append(item)
         self.save()
         return item["id"]
+    
+    def update(self, item: dict) -> bool:
+        updated = False
+        self.open()
+        i = 0
+        for d in self.data:
+            if item["id"] == d["id"]:
+                self.data[i] = item
+                updated = True
+                continue
+            i += 1
+        self.save()
+        return updated
+

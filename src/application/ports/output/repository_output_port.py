@@ -5,3 +5,7 @@ class RepositoryOutputPort(ABC):
     @abstractmethod
     def create(self, item: dict) -> int:
         pass
+
+    @abstractmethod
+    def update(self, item: dict) -> bool:
+        pass
