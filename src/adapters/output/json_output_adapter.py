@@ -1,8 +1,10 @@
 from os.path import exists
 from json import load, dump
 
+from src.application.ports.output import RepositoryOutputPort
 
-class JsonOutputAdapter:
+
+class JsonOutputAdapter(RepositoryOutputPort):
     file_name: str
     data: list[dict]
 
