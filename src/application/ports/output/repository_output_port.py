@@ -7,5 +7,9 @@ class RepositoryOutputPort(ABC):
         pass
 
     @abstractmethod
+    def get_all() -> list[dict]:
+        pass
+
+    @abstractmethod
     def update(self, item: dict) -> bool:
         pass

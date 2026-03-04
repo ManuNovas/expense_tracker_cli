@@ -49,6 +49,19 @@ class TestJsonOutputAdapter(TestCase):
         id = self.adapter.create(item)
         self.assertEqual(id > 0, True)
 
+    def test_get_all(self):
+        items = [
+            {
+                "id": 1,
+                "name": "Clive Rosfield",
+                "email": "clive@rosfield.test"
+            }
+        ]
+        self.adapter.open = MagicMock()
+        self.adapter.data = items
+        data = self.adapter.get_all()
+        self.assertEqual(items, data)
+
     def test_update(self):
         self.adapter.open = MagicMock()
         self.adapter.data = [
