@@ -1,14 +1,16 @@
 from datetime import datetime
 
+
 class Expense:
     id: int | None
     description: str
     amount: float
     created_at: datetime
-    updated_at: datetime
+    updated_at: datetime | None
 
-    def __init__(self, id: int | None, description: str, amount: float, created_at: datetime, updated_at = datetime | None):
-        self.id = id
+    def __init__(self, expense_id: int | None, description: str, amount: float, created_at: datetime,
+                 updated_at=datetime | None):
+        self.id = expense_id
         self.description = description
         self.amount = amount
         self.created_at = created_at

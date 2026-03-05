@@ -23,4 +23,3 @@ class ExpenseInputAdapter:
             print("Unknown command.")
             response = 1
         return response
-

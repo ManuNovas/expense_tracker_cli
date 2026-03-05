@@ -208,3 +208,6 @@ __marimo__/
 
 # Repository
 *.json
+
+# IDEs
+.idea/

@@ -7,7 +7,7 @@ from src.application.ports.input import ExpenseInputPort
 class ExpenseUseCases(ExpenseInputPort):
     def create(self, description: str, amount: float) -> int:
         expense = Expense(
-            id=None,
+            expense_id=None,
             description=description,
             amount=amount,
             created_at=datetime.now(),

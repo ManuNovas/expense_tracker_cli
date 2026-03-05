@@ -21,22 +21,29 @@ class JsonOutputAdapter(RepositoryOutputPort):
 
     def get_next_id(self):
         return self.data[-1]["id"] + 1 if len(self.data) > 0 else 1
-    
+
     def save(self):
         with open(self.file_name, "w") as file:
             dump(self.data, file)
-    
+
     def create(self, item: dict) -> int:
         self.open()
         item["id"] = self.get_next_id()
         self.data.append(item)
         self.save()
         return item["id"]
-    
+
     def get_all(self) -> list[dict]:
         self.open()
         return self.data
-    
+
+    def get_by_id(self, item_id: int) -> dict | None:
+        self.open()
+        for item in self.data:
+            if item["id"] == item_id:
+                return item
+        return None
+
     def update(self, item: dict) -> bool:
         updated = False
         self.open()
@@ -45,8 +52,20 @@ class JsonOutputAdapter(RepositoryOutputPort):
             if item["id"] == d["id"]:
                 self.data[i] = item
                 updated = True
-                continue
+                break
             i += 1
         self.save()
         return updated
 
+    def delete(self, item_id: int) -> bool:
+        deleted = False
+        self.open()
+        i = 0
+        for item in self.data:
+            if item_id == item["id"]:
+                self.data.pop(i)
+                deleted = True
+                break
+            i += 1
+        self.save()
+        return deleted
