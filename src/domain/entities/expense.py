@@ -24,3 +24,6 @@ class Expense:
             "created_at": self.created_at.isoformat(),
             "updated_at": self.updated_at.isoformat() if self.updated_at is not None else None
         }
+    
+    def created_at_date_format(self):
+        return self.created_at.strftime("%Y-%m-%d")

@@ -15,6 +15,13 @@ class ExpenseInputAdapter:
         id = self.input_port.create(description, amount)
         print(f"Expense added successfuly (ID: {id})")
         return 0
+    
+    def list(self):
+        expenses = self.input_port.list()
+        print("# ID\tDate\tDescription\tAmount")
+        for expense in expenses:
+            print(f"# {expense.id}\t{expense.created_at_date_format()}\t{expense.description}\t${expense.amount}")
+        return 0
 
     def main(self, args: ArgsDto) -> int:
         if args.command == "add":
