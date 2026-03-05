@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 
 from src.application.ports.output import RepositoryOutputPort
+from src.domain.entities import Expense
 
 
 class ExpenseInputPort(ABC):
@@ -11,4 +12,8 @@ class ExpenseInputPort(ABC):
 
     @abstractmethod
     def create(self, description: str, amount: float) -> int:
+        pass
+
+    @abstractmethod
+    def list(self) ->list[Expense]:
         pass

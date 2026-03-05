@@ -14,3 +14,17 @@ class ExpenseUseCases(ExpenseInputPort):
             updated_at=None
         )
         return self.repository_port.create(expense.to_dict())
+    
+    def list(self) -> list[Expense]:
+        expenses = []
+        items = self.repository_port.get_all()
+        for item in items:
+            expense = Expense(
+                expense_id=item["id"],
+                description=item["description"],
+                amount=item["amount"],
+                created_at=datetime.fromisoformat(item["created_at"]),
+                updated_at=datetime.fromisoformat(item["updated_at"]) if item["updated_at"] is not None else None
+            )
+            expenses.append(expense)
+        return expenses
