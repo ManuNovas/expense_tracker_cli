@@ -18,9 +18,9 @@ class ExpenseInputAdapter:
     
     def list(self):
         expenses = self.input_port.list()
-        print("# ID\tDate\tDescription\tAmount")
+        print("# ID\tDate\t\tDescription\t\tAmount")
         for expense in expenses:
-            print(f"# {expense.id}\t{expense.created_at_date_format()}\t{expense.description}\t${expense.amount}")
+            print(f"# {expense.id}\t{expense.created_at_date_format()}\t{expense.description:<24}${expense.amount}")
         return 0
 
     def main(self, args: ArgsDto) -> int:
