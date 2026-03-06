@@ -26,17 +26,6 @@ class TestExpenseInputAdapter(TestCase):
         result = self.adapter.add("Ether", 128.0)
         self.assertEqual(result, 0)
 
-    def test_main_add_success(self):
-        args = ArgsDto(command="add", description="Phoenix Down", amount=512.0)
-        self.adapter.add = MagicMock(return_value=0)
-        result = self.adapter.main(args)
-        self.assertEqual(result, 0)
-
-    def test_main_add_unknown_command(self):
-        args = ArgsDto(command="heal", description="Phoenix Down", amount=512.0)
-        result = self.adapter.main(args)
-        self.assertEqual(result, 1)
-
     def test_list(self):
         expenses = [
             Expense(
@@ -57,3 +46,20 @@ class TestExpenseInputAdapter(TestCase):
         self.adapter.input_port.list = MagicMock(return_value=expenses)
         result = self.adapter.list()
         self.assertEqual(result, 0)
+
+    def test_main_add_success(self):
+        args = ArgsDto(command="add", description="Phoenix Down", amount=512.0)
+        self.adapter.add = MagicMock(return_value=0)
+        result = self.adapter.main(args)
+        self.assertEqual(result, 0)
+
+    def test_main_list(self):
+        args = ArgsDto(command="list", description=None, amount=None)
+        self.adapter.list = MagicMock(return_value=0)
+        result = self.adapter.main(args)
+        self.assertEqual(result, 0)
+
+    def test_main_add_unknown_command(self):
+        args = ArgsDto(command="heal", description="Phoenix Down", amount=512.0)
+        result = self.adapter.main(args)
+        self.assertEqual(result, 1)

@@ -26,6 +26,8 @@ class ExpenseInputAdapter:
     def main(self, args: ArgsDto) -> int:
         if args.command == "add":
             response = self.add(args.description, args.amount)
+        elif args.command == "list":
+            response = self.list()
         else:
             print("Unknown command.")
             response = 1
