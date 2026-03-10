@@ -32,3 +32,21 @@ class TestExpenseUseCases(TestCase):
         self.assertEqual(items[0]["amount"], expenses[0].amount)
         self.assertEqual(items[0]["created_at"], expenses[0].created_at.isoformat())
         self.assertEqual(items[0]["updated_at"], expenses[0].updated_at.isoformat())
+
+    def test_update(self):
+        expense = {
+            "id": 2,
+            "description": "Potion",
+            "amount": 128.0,
+            "created_at": "2026-03-09 21:34:00",
+            "updated_at": None
+        }
+        self.use_cases.repository_port.get_by_id = MagicMock(return_value=expense)
+        self.use_cases.repository_port.update = MagicMock(return_value=True)
+        result = self.use_cases.update(2, "High Potion", 256.0)
+        self.assertTrue(result)
+
+    def test_update_not_found(self):
+        self.use_cases.repository_port.get_by_id = MagicMock(return_value=None)
+        result = self.use_cases.update(3, "Ether", 256.0)
+        self.assertEqual(result, False)
