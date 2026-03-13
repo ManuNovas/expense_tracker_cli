@@ -24,7 +24,12 @@ class ExpenseInputAdapter:
         return 0
     
     def update(self, id: int, description: str | None, amount: str | None):
-        return 0 if self.input_port.update(id, description, amount) else 3
+        updated = self.input_port.update(id, description, amount)
+        if not updated:
+            print("The expense is not found")
+            return 3
+        print(f"Expense updated succesfuly (ID: {id})")
+        return 0
 
     def main(self, args: ArgsDto) -> int:
         if args.command == "add":
