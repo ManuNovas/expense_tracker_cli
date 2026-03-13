@@ -47,6 +47,16 @@ class TestExpenseInputAdapter(TestCase):
         result = self.adapter.list()
         self.assertEqual(result, 0)
 
+    def test_update_success(self):
+        self.adapter.input_port.update = MagicMock(return_value=True)
+        result = self.adapter.update(1, "High Potion", amount=512.0)
+        self.assertEqual(result, 0)
+
+    def test_update_error(self):
+        self.adapter.input_port.update = MagicMock(return_value=False)
+        result = self.adapter.update(1024, "High Potion", amount=-128.0)
+        self.assertEqual(result, 3)
+
     def test_main_add_success(self):
         args = ArgsDto(command="add", description="Phoenix Down", amount=512.0)
         self.adapter.add = MagicMock(return_value=0)
@@ -56,6 +66,12 @@ class TestExpenseInputAdapter(TestCase):
     def test_main_list(self):
         args = ArgsDto(command="list", description=None, amount=None)
         self.adapter.list = MagicMock(return_value=0)
+        result = self.adapter.main(args)
+        self.assertEqual(result, 0)
+
+    def test_main_update(self):
+        args = ArgsDto(command="update", id=1, description="High Potion", amount=512.0)
+        self.adapter.update = MagicMock(return_value=0)
         result = self.adapter.main(args)
         self.assertEqual(result, 0)
 

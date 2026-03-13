@@ -22,12 +22,17 @@ class ExpenseInputAdapter:
         for expense in expenses:
             print(f"# {expense.id}\t{expense.created_at_date_format()}\t{expense.description:<24}${expense.amount}")
         return 0
+    
+    def update(self, id: int, description: str | None, amount: str | None):
+        return 0 if self.input_port.update(id, description, amount) else 3
 
     def main(self, args: ArgsDto) -> int:
         if args.command == "add":
             response = self.add(args.description, args.amount)
         elif args.command == "list":
             response = self.list()
+        elif args.command == "update":
+            response = self.update(args.id, args.description, args.amount)
         else:
             print("Unknown command.")
             response = 1

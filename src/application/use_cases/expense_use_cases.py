@@ -29,11 +29,13 @@ class ExpenseUseCases(ExpenseInputPort):
             expenses.append(expense)
         return expenses
     
-    def update(self, id: int, description: str, amount: float) -> bool:
+    def update(self, id: int, description: str | None, amount: float | None) -> bool:
         expense = self.repository_port.get_by_id(id)
         if expense is None:
             return False
-        expense["description"] = description
-        expense["amount"] = amount
+        if description is not None:
+            expense["description"] = description
+        if amount is not None:
+            expense["amount"] = amount
         expense["updated_at"] = datetime.now().isoformat()
         return self.repository_port.update(expense)
