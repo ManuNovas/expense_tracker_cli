@@ -1,5 +1,7 @@
 from argparse import ArgumentParser
 
+from src.domain.dtos import ArgsDto
+from src.domain.enums import Command
 from src.adapters.input import ExpenseInputAdapter
 from src.adapters.output import JsonOutputAdapter
 from src.application.use_cases import ExpenseUseCases
@@ -13,4 +15,14 @@ parser.add_argument("-i", "--id", type=int, help="ID of expense")
 parser.add_argument("-d", "--description", type=str, help="Description of expense")
 parser.add_argument("-a", "--amount", type=float, help="Amount of expense")
 args = parser.parse_args()
-adapter.main(args)
+command = Command(args.command)
+if not command:
+    print("Unknown command")
+    exit(1)
+dto = ArgsDto(
+    command=Command(args.command),
+    description=args.description,
+    amount=args.amount,
+    expense_id=args.id
+)
+adapter.main(dto)

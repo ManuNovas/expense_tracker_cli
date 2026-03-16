@@ -1,4 +1,4 @@
-from domain.enums import Command
+from src.domain.enums import Command
 
 
 class ArgsDto:
@@ -8,8 +8,8 @@ class ArgsDto:
     id: int | None
 
     def __init__(self, command: Command, description: str | None = None, amount: float | None = None,
-                 id: int | None = None):
+                 expense_id: int | None = None):
         self.command = command
         self.description = description
         self.amount = amount
-        self.id = id
+        self.id = expense_id

@@ -81,13 +81,13 @@ class TestExpenseInputAdapter(TestCase):
         self.assertEqual(result, 0)
 
     def test_main_update(self):
-        args = ArgsDto(command=Command.UPDATE, id=1, description="High Potion", amount=512.0)
+        args = ArgsDto(command=Command.UPDATE, expense_id=1, description="High Potion", amount=512.0)
         self.adapter.update = MagicMock(return_value=0)
         result = self.adapter.main(args)
         self.assertEqual(result, 0)
 
     def test_main_delete(self):
-        args = ArgsDto(command=Command.DELETE, id=1)
+        args = ArgsDto(command=Command.DELETE, expense_id=1)
         self.adapter.delete = MagicMock(return_value=0)
         result = self.adapter.main(args)
         self.assertEqual(result, 0)
