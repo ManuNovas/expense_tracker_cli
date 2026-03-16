@@ -14,8 +14,8 @@ class TestExpenseUseCases(TestCase):
 
     def test_create_expense(self):
         self.use_cases.repository_port.create = MagicMock(return_value=1)
-        id = self.use_cases.create(description="Potions", amount=128.0)
-        self.assertEqual(id, 1)
+        expense_id = self.use_cases.create(description="Potions", amount=128.0)
+        self.assertEqual(expense_id, 1)
 
     def test_list(self):
         items = [{
@@ -49,4 +49,14 @@ class TestExpenseUseCases(TestCase):
     def test_update_not_found(self):
         self.use_cases.repository_port.get_by_id = MagicMock(return_value=None)
         result = self.use_cases.update(3, "Ether", 256.0)
+        self.assertEqual(result, False)
+
+    def test_delete_success(self):
+        self.use_cases.repository_port.delete = MagicMock(return_value=True)
+        result = self.use_cases.delete(1)
+        self.assertTrue(result)
+
+    def test_delete_not_found(self):
+        self.use_cases.repository_port.delete = MagicMock(return_value=False)
+        result = self.use_cases.delete(1)
         self.assertEqual(result, False)

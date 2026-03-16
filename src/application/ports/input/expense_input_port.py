@@ -19,5 +19,9 @@ class ExpenseInputPort(ABC):
         pass
 
     @abstractmethod
-    def update(seld, id: int, description: str | None, amount: float | None) -> bool:
+    def update(self, expense_id: int, description: str | None, amount: float | None) -> bool:
+        pass
+
+    @abstractmethod
+    def delete(self, expense_id: int) -> bool:
         pass
