@@ -1,5 +1,6 @@
 from src.application.ports.input import ExpenseInputPort
 from src.domain.dtos import ArgsDto
+from src.domain.enums import Command
 
 
 class ExpenseInputAdapter:
@@ -12,8 +13,8 @@ class ExpenseInputAdapter:
         if not description or not amount:
             print("You should specify a description and an amount.")
             return 2
-        id = self.input_port.create(description, amount)
-        print(f"Expense added successfuly (ID: {id})")
+        expense_id = self.input_port.create(description, amount)
+        print(f"Expense added successfully (ID: {expense_id})")
         return 0
     
     def list(self):
@@ -22,22 +23,32 @@ class ExpenseInputAdapter:
         for expense in expenses:
             print(f"# {expense.id}\t{expense.created_at_date_format()}\t{expense.description:<24}${expense.amount}")
         return 0
-    
-    def update(self, id: int, description: str | None, amount: str | None):
-        updated = self.input_port.update(id, description, amount)
+
+    def update(self, expense_id: int, description: str | None, amount: float | None):
+        updated = self.input_port.update(expense_id, description, amount)
         if not updated:
             print("The expense is not found")
             return 3
-        print(f"Expense updated succesfuly (ID: {id})")
+        print(f"Expense updated successfully (ID: {expense_id})")
+        return 0
+
+    def delete(self, expense_id: int):
+        deleted = self.input_port.delete(expense_id)
+        if not deleted:
+            print("The expense is not found")
+            return 3
+        print(f"Expense deleted successfully (ID: {expense_id})")
         return 0
 
     def main(self, args: ArgsDto) -> int:
-        if args.command == "add":
+        if args.command == Command.ADD:
             response = self.add(args.description, args.amount)
-        elif args.command == "list":
+        elif args.command == Command.LIST:
             response = self.list()
-        elif args.command == "update":
+        elif args.command == Command.UPDATE:
             response = self.update(args.id, args.description, args.amount)
+        elif args.command == Command.DELETE:
+            response = self.delete(args.id)
         else:
             print("Unknown command.")
             response = 1

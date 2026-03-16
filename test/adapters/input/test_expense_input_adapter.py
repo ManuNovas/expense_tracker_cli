@@ -7,6 +7,7 @@ from src.adapters.output import JsonOutputAdapter
 from src.application.use_cases import ExpenseUseCases
 from src.domain.dtos import ArgsDto
 from src.domain.entities import Expense
+from src.domain.enums import Command
 
 
 class TestExpenseInputAdapter(TestCase):
@@ -14,9 +15,9 @@ class TestExpenseInputAdapter(TestCase):
 
     def setUp(self):
         repository = JsonOutputAdapter("expenses.json")
-        input = ExpenseUseCases(repository)
-        input.create = MagicMock(return_value=1)
-        self.adapter = ExpenseInputAdapter(input)
+        use_cases = ExpenseUseCases(repository)
+        use_cases.create = MagicMock(return_value=1)
+        self.adapter = ExpenseInputAdapter(use_cases)
 
     def test_add_without_arguments(self):
         result = self.adapter.add("Ether", None)
@@ -57,25 +58,36 @@ class TestExpenseInputAdapter(TestCase):
         result = self.adapter.update(1024, "High Potion", amount=-128.0)
         self.assertEqual(result, 3)
 
+    def test_delete_success(self):
+        self.adapter.input_port.delete = MagicMock(return_value=True)
+        result = self.adapter.delete(1)
+        self.assertEqual(result, 0)
+
+    def test_delete_error(self):
+        self.adapter.input_port.delete = MagicMock(return_value=False)
+        result = self.adapter.delete(1024)
+        self.assertEqual(result, 3)
+
     def test_main_add_success(self):
-        args = ArgsDto(command="add", description="Phoenix Down", amount=512.0)
+        args = ArgsDto(command=Command.ADD, description="Phoenix Down", amount=512.0)
         self.adapter.add = MagicMock(return_value=0)
         result = self.adapter.main(args)
         self.assertEqual(result, 0)
 
     def test_main_list(self):
-        args = ArgsDto(command="list", description=None, amount=None)
+        args = ArgsDto(command=Command.LIST, description=None, amount=None)
         self.adapter.list = MagicMock(return_value=0)
         result = self.adapter.main(args)
         self.assertEqual(result, 0)
 
     def test_main_update(self):
-        args = ArgsDto(command="update", id=1, description="High Potion", amount=512.0)
+        args = ArgsDto(command=Command.UPDATE, id=1, description="High Potion", amount=512.0)
         self.adapter.update = MagicMock(return_value=0)
         result = self.adapter.main(args)
         self.assertEqual(result, 0)
 
-    def test_main_add_unknown_command(self):
-        args = ArgsDto(command="heal", description="Phoenix Down", amount=512.0)
+    def test_main_delete(self):
+        args = ArgsDto(command=Command.DELETE, id=1)
+        self.adapter.delete = MagicMock(return_value=0)
         result = self.adapter.main(args)
-        self.assertEqual(result, 1)
+        self.assertEqual(result, 0)
