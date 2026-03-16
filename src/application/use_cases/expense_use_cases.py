@@ -46,7 +46,8 @@ class ExpenseUseCases(ExpenseInputPort):
     def summary(self, month: int | None) -> float:
         expenses = self.list()
         summary = 0.0
+        current_year = datetime.now().year
         for expense in expenses:
-            if month is None or expense.created_at.month == month:
+            if month is None or (expense.created_at.month == month and expense.created_at.year == current_year):
                 summary += expense.amount
         return summary

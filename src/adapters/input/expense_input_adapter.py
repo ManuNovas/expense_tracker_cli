@@ -1,3 +1,5 @@
+from calendar import month_name
+
 from src.application.ports.input import ExpenseInputPort
 from src.domain.dtos import ArgsDto
 from src.domain.enums import Command
@@ -40,6 +42,12 @@ class ExpenseInputAdapter:
         print(f"Expense deleted successfully (ID: {expense_id})")
         return 0
 
+    def summary(self, month: int | None):
+        summary = self.input_port.summary(month)
+        month_description = f" for {month_name[month]}" if month is not None else ""
+        print(f"Total expenses{month_description}: ${summary}")
+        return 0
+
     def main(self, args: ArgsDto) -> int:
         if args.command == Command.ADD:
             response = self.add(args.description, args.amount)
@@ -49,6 +57,8 @@ class ExpenseInputAdapter:
             response = self.update(args.id, args.description, args.amount)
         elif args.command == Command.DELETE:
             response = self.delete(args.id)
+        elif args.command == Command.SUMMARY:
+            response = self.summary(args.month)
         else:
             print("Unknown command.")
             response = 1

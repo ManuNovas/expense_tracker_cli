@@ -6,3 +6,4 @@ class Command(Enum):
     LIST = "list"
     UPDATE = "update"
     DELETE = "delete"
+    SUMMARY = "summary"

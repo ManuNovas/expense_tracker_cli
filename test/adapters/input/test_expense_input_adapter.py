@@ -68,6 +68,16 @@ class TestExpenseInputAdapter(TestCase):
         result = self.adapter.delete(1024)
         self.assertEqual(result, 3)
 
+    def test_summary_without_month(self):
+        self.adapter.input_port.summary = MagicMock(return_value=128.0)
+        result = self.adapter.summary(None)
+        self.assertEqual(result, 0)
+
+    def test_summary_with_month(self):
+        self.adapter.input_port.summary = MagicMock(return_value=128.0)
+        result = self.adapter.summary(3)
+        self.assertEqual(result, 0)
+
     def test_main_add_success(self):
         args = ArgsDto(command=Command.ADD, description="Phoenix Down", amount=512.0)
         self.adapter.add = MagicMock(return_value=0)
@@ -89,5 +99,11 @@ class TestExpenseInputAdapter(TestCase):
     def test_main_delete(self):
         args = ArgsDto(command=Command.DELETE, expense_id=1)
         self.adapter.delete = MagicMock(return_value=0)
+        result = self.adapter.main(args)
+        self.assertEqual(result, 0)
+
+    def test_main_summary(self):
+        args = ArgsDto(command=Command.SUMMARY, month=3)
+        self.adapter.summary = MagicMock(return_value=0)
         result = self.adapter.main(args)
         self.assertEqual(result, 0)

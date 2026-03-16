@@ -73,14 +73,17 @@ class TestExpenseUseCases(TestCase):
         self.assertEqual(result, 192.0)
 
     def test_summary_with_month(self):
+        current_year = datetime.now().year
         expenses = [
-            Expense(expense_id=1, description="Potion", amount=64.0, created_at=datetime(2026, 2, 16, 0, 0, 0),
+            Expense(expense_id=1, description="Potion", amount=64.0, created_at=datetime(current_year, 2, 16, 0, 0, 0),
                     updated_at=None),
-            Expense(expense_id=2, description="High Potion", amount=128.0, created_at=datetime(2026, 2, 16, 0, 0, 0),
+            Expense(expense_id=2, description="High Potion", amount=128.0,
+                    created_at=datetime(current_year, 2, 16, 0, 0, 0),
                     updated_at=None),
-            Expense(expense_id=3, description="Ether", amount=256.0, created_at=datetime(2026, 3, 16, 0, 0, 0),
+            Expense(expense_id=3, description="Ether", amount=256.0, created_at=datetime(current_year, 3, 16, 0, 0, 0),
                     updated_at=None),
-            Expense(expense_id=4, description="Phoenix Down", amount=512.0, created_at=datetime(2026, 3, 16, 0, 0, 0),
+            Expense(expense_id=4, description="Phoenix Down", amount=512.0,
+                    created_at=datetime(current_year, 3, 16, 0, 0, 0),
                     updated_at=None),
         ]
         self.use_cases.list = MagicMock(return_value=expenses)
