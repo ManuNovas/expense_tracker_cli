@@ -25,3 +25,7 @@ class ExpenseInputPort(ABC):
     @abstractmethod
     def delete(self, expense_id: int) -> bool:
         pass
+
+    @abstractmethod
+    def summary(self, month: int | None) -> float:
+        pass

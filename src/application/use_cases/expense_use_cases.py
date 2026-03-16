@@ -42,3 +42,11 @@ class ExpenseUseCases(ExpenseInputPort):
 
     def delete(self, expense_id: int) -> bool:
         return self.repository_port.delete(expense_id)
+
+    def summary(self, month: int | None) -> float:
+        expenses = self.list()
+        summary = 0.0
+        for expense in expenses:
+            if month is None or expense.created_at.month == month:
+                summary += expense.amount
+        return summary

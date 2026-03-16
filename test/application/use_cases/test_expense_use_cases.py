@@ -1,6 +1,8 @@
+from datetime import datetime
 from unittest import TestCase
 from unittest.mock import MagicMock
 
+from domain.entities import Expense
 from src.adapters.output import JsonOutputAdapter
 from src.application.use_cases import ExpenseUseCases
 
@@ -60,3 +62,27 @@ class TestExpenseUseCases(TestCase):
         self.use_cases.repository_port.delete = MagicMock(return_value=False)
         result = self.use_cases.delete(1)
         self.assertEqual(result, False)
+
+    def test_summary_without_month(self):
+        expenses = [
+            Expense(expense_id=1, description="Potion", amount=64.0, created_at=datetime.now(), updated_at=None),
+            Expense(expense_id=2, description="High Potion", amount=128.0, created_at=datetime.now(), updated_at=None),
+        ]
+        self.use_cases.list = MagicMock(return_value=expenses)
+        result = self.use_cases.summary(None)
+        self.assertEqual(result, 192.0)
+
+    def test_summary_with_month(self):
+        expenses = [
+            Expense(expense_id=1, description="Potion", amount=64.0, created_at=datetime(2026, 2, 16, 0, 0, 0),
+                    updated_at=None),
+            Expense(expense_id=2, description="High Potion", amount=128.0, created_at=datetime(2026, 2, 16, 0, 0, 0),
+                    updated_at=None),
+            Expense(expense_id=3, description="Ether", amount=256.0, created_at=datetime(2026, 3, 16, 0, 0, 0),
+                    updated_at=None),
+            Expense(expense_id=4, description="Phoenix Down", amount=512.0, created_at=datetime(2026, 3, 16, 0, 0, 0),
+                    updated_at=None),
+        ]
+        self.use_cases.list = MagicMock(return_value=expenses)
+        result = self.use_cases.summary(3)
+        self.assertEqual(result, 768.0)
