@@ -15,6 +15,9 @@ class ExpenseInputAdapter:
         if not description or not amount:
             print("You should specify a description and an amount.")
             return 2
+        if amount < 0:
+            print("The amount must be positive.")
+            return 5
         expense_id = self.input_port.create(description, amount)
         print(f"Expense added successfully (ID: {expense_id})")
         return 0
@@ -27,6 +30,9 @@ class ExpenseInputAdapter:
         return 0
 
     def update(self, expense_id: int, description: str | None, amount: float | None):
+        if amount is not None and amount < 0:
+            print("The amount must be positive.")
+            return 5
         updated = self.input_port.update(expense_id, description, amount)
         if not updated:
             print("The expense is not found")
@@ -43,6 +49,9 @@ class ExpenseInputAdapter:
         return 0
 
     def summary(self, month: int | None):
+        if month is not None and (month < 1 or month > 12):
+            print("The month must be between 1 and 12")
+            return 4
         summary = self.input_port.summary(month)
         month_description = f" for {month_name[month]}" if month is not None else ""
         print(f"Total expenses{month_description}: ${summary}")

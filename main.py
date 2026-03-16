@@ -14,15 +14,17 @@ parser.add_argument("command", type=str, help="Supports: add, list and update")
 parser.add_argument("-i", "--id", type=int, help="ID of expense")
 parser.add_argument("-d", "--description", type=str, help="Description of expense")
 parser.add_argument("-a", "--amount", type=float, help="Amount of expense")
+parser.add_argument("-m", "--month", type=int, help="Month of expense")
 args = parser.parse_args()
-command = Command(args.command)
-if not command:
-    print("Unknown command")
-    exit(1)
-dto = ArgsDto(
-    command=Command(args.command),
-    description=args.description,
-    amount=args.amount,
-    expense_id=args.id
-)
-adapter.main(dto)
+try:
+    command = Command(args.command)
+    dto = ArgsDto(
+        command=Command(args.command),
+        description=args.description,
+        amount=args.amount,
+        expense_id=args.id,
+        month=args.month
+    )
+    adapter.main(dto)
+except Exception as e:
+    print(e)

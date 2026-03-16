@@ -56,7 +56,7 @@ class TestExpenseInputAdapter(TestCase):
     def test_update_error(self):
         self.adapter.input_port.update = MagicMock(return_value=False)
         result = self.adapter.update(1024, "High Potion", amount=-128.0)
-        self.assertEqual(result, 3)
+        self.assertEqual(result, 5)
 
     def test_delete_success(self):
         self.adapter.input_port.delete = MagicMock(return_value=True)
